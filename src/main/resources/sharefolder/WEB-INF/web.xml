@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>     
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"  
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"  
+       version="2.5">   
+    <servlet>  
+		<servlet-name>webdav</servlet-name>  
+		<servlet-class>com.security.cloud.servlet.MyServlet</servlet-class>  
+		<init-param>
+			<param-name>debug</param-name>  
+			<param-value>0</param-value>  
+		</init-param>  		
+		<init-param>  
+			<param-name>listings</param-name>  
+			<param-value>true</param-value>  
+		</init-param> 		
+		<init-param>  
+			<param-name>readonly</param-name>  
+			<param-value>false</param-value>  
+		</init-param> 
+		<!--
+		<init-param>  
+		  <param-name>allowSpecialPaths</param-name>  
+		  <param-value>true</param-value>  
+		</init-param>  
+		load-on-startup>1</load-on-startup-->  
+    </servlet>
+		
+	<!-- 	
+	<security-constraint>
+   		<web-resource-collection>
+	    	<web-resource-name>myApp</web-resource-name>
+
+			<url-pattern>/*</url-pattern>
+	    	<http-method>PROPFIND</http-method>
+	    	<http-method>PROPPATCH</http-method>
+     			<http-method>COPY</http-method>
+     			<http-method>MOVE</http-method>
+     			<http-method>LOCK</http-method>
+     			<http-method>UNLOCK</http-method>
+   		</web-resource-collection>
+
+		<auth-constraint>
+        	<role-name>webdav</role-name>
+    	</auth-constraint>
+	</security-constraint>
+
+	<login-config>
+   		<auth-method>BASIC</auth-method>
+	    <realm-name>myApp</realm-name>
+	</login-config>
+	
+	<security-role>
+		<description>WebDAV User</description>
+		<role-name>webdav</role-name>
+	</security-role>
+	 -->
+	 
+	<filter>
+		<filter-name>setCharacterEncodingFilter</filter-name>
+		<filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+		<init-param>
+  				<param-name>encoding</param-name>
+  				<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>setCharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+     
+	<servlet-mapping>  
+		<servlet-name>webdav</servlet-name>  
+		<url-pattern>/webdavedit/*</url-pattern>  
+	</servlet-mapping>   
+</web-app>  
