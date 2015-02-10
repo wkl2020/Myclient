@@ -6,7 +6,12 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-public class CharArrayWrapper extends HttpServletResponseWrapper {
+/**
+ * Only for writer, no for outputstream type
+ * 
+ * @version $Rev$ $Date$
+ */
+public class LocalResponseWrapper extends HttpServletResponseWrapper {
 
     private CharArrayWriter charWriter;
 
@@ -17,7 +22,7 @@ public class CharArrayWrapper extends HttpServletResponseWrapper {
      * <P>
      * 另外将新建立一个字符输出流来执行response的响应输出操作.
      */
-    public CharArrayWrapper(HttpServletResponse response) {
+    public LocalResponseWrapper(HttpServletResponse response) {
         super(response);
         charWriter = new CharArrayWriter();
     }

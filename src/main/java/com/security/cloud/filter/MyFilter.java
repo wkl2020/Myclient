@@ -13,7 +13,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.security.cloud.util.CharArrayWrapper;
+import com.security.cloud.util.LocalResponseWrapper;
 
 public class MyFilter implements Filter {
     
@@ -43,7 +43,7 @@ public class MyFilter implements Filter {
         }
         HttpServletRequest httpRequest = ((HttpServletRequest) request);
         HttpServletResponse httpResponse = ((HttpServletResponse) response);
-        CharArrayWrapper wrapper = new CharArrayWrapper(httpResponse); 
+        LocalResponseWrapper wrapper = new LocalResponseWrapper(httpResponse); 
 
         // Pass control on to the next filter
         //chain.doFilter(request, response);
