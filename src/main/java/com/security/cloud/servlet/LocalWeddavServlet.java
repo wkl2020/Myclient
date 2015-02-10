@@ -471,7 +471,9 @@ public class LocalWeddavServlet
         }
 
         Node propNode = null;
-
+        
+        log("00000001(path: depthStr: ContentLength: ): " + path + ": " + depthStr + ": " + req.getContentLength());
+        
         if (req.getContentLength() > 0) {
             DocumentBuilder documentBuilder = getDocumentBuilder();
 
@@ -512,7 +514,9 @@ public class LocalWeddavServlet
                 return;
             }
         }
-
+        
+        log("00000004(FIND_BY_PROPERTY: type: ): " + FIND_BY_PROPERTY + ": " + type);
+        
         if (type == FIND_BY_PROPERTY) {
             properties = new Vector<>();
             // propNode must be non-null if type == FIND_BY_PROPERTY
@@ -542,6 +546,7 @@ public class LocalWeddavServlet
         }
 
         WebResource resource = resources.getResource(path);
+        log("00000002(!resource.exists: ): " + !resource.exists());
 
         if (!resource.exists()) {
             int slash = path.lastIndexOf('/');
@@ -555,6 +560,8 @@ public class LocalWeddavServlet
                     while (lockNullResourcesList.hasMoreElements()) {
                         String lockNullPath =
                             lockNullResourcesList.nextElement();
+                        
+                        log("00000005(lockNullPath: ): " + lockNullPath);
                         if (lockNullPath.equals(path)) {
                             resp.setStatus(WebdavStatus.SC_MULTI_STATUS);
                             resp.setContentType("text/xml; charset=UTF-8");
@@ -607,6 +614,8 @@ public class LocalWeddavServlet
             while ((!stack.isEmpty()) && (depth >= 0)) {
 
                 String currentPath = stack.pop();
+                
+                log("00000010(currentPath: ): " + currentPath);
                 parseProperties(req, generatedXML, currentPath,
                                 type, properties);
 
@@ -620,6 +629,8 @@ public class LocalWeddavServlet
                         if (!(newPath.endsWith("/")))
                                 newPath += "/";
                         newPath += entry;
+                        
+                        log("00000011(newPath: ): " + newPath);
                         stackBelow.push(newPath);
                     }
 
@@ -637,6 +648,8 @@ public class LocalWeddavServlet
                         while (lockNullResourcesList.hasMoreElements()) {
                             String lockNullPath =
                                 lockNullResourcesList.nextElement();
+                            
+                            log("00000006(lockNullPath: ): " + lockNullPath);
                             parseLockNullProperties
                                 (req, generatedXML, lockNullPath, type,
                                  properties);
@@ -1073,6 +1086,8 @@ public class LocalWeddavServlet
                 locksList = collectionLocks.elements();
                 while (locksList.hasMoreElements()) {
                     LockInfo currentLock = locksList.nextElement();
+                    
+                    log("00000007(currentLock: ): " + currentLock.path);                    
                     if (currentLock.hasExpired()) {
                         resourceLocks.remove(currentLock.path);
                         continue;
@@ -1087,6 +1102,8 @@ public class LocalWeddavServlet
                 locksList = resourceLocks.elements();
                 while (locksList.hasMoreElements()) {
                     LockInfo currentLock = locksList.nextElement();
+                    
+                    log("00000008(currentLock: ): " + currentLock.path);
                     if (currentLock.hasExpired()) {
                         resourceLocks.remove(currentLock.path);
                         continue;
@@ -1115,11 +1132,14 @@ public class LocalWeddavServlet
                             "multistatus", XMLWriter.OPENING);
 
                     while (lockPathsList.hasMoreElements()) {
+                    	String element = lockPathsList.nextElement();
+                    	
+                    	log("00000009(element: ): " + element);
                         generatedXML.writeElement("D", "response",
                                 XMLWriter.OPENING);
                         generatedXML.writeElement("D", "href",
                                 XMLWriter.OPENING);
-                        generatedXML.writeText(lockPathsList.nextElement());
+                        generatedXML.writeText(element);
                         generatedXML.writeElement("D", "href",
                                 XMLWriter.CLOSING);
                         generatedXML.writeElement("D", "status",
@@ -1928,7 +1948,14 @@ public class LocalWeddavServlet
         int lastSlash = path.lastIndexOf('/');
         if (lastSlash != -1)
             resourceName = resourceName.substring(lastSlash + 1);
+        
+        log("00000012(path: href: ): " + path + ": " + href);
 
+        log("00000003(parseProperties: type: ): " + type 
+        		+ " FIND_ALL_PROP:" + FIND_ALL_PROP 
+        		+ " FIND_PROPERTY_NAMES:" + FIND_PROPERTY_NAMES
+        		+ " FIND_BY_PROPERTY:" + FIND_BY_PROPERTY);
+        
         switch (type) {
 
         case FIND_ALL_PROP :

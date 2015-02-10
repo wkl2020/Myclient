@@ -48,14 +48,14 @@ public class MyFilter implements Filter {
         // Pass control on to the next filter
         //chain.doFilter(request, response);
         chain.doFilter(request, wrapper);
-        String result = wrapper.toString(); // 获取返回结果
+        String result = wrapper.toString();
         log(request, result);
         
 //        httpResponse.getOutputStream()
         try {
             PrintWriter out = httpResponse.getWriter();
             out.write(result);
-            out.close(); //输出处理后的结果
+            out.close(); 
         } catch (IllegalStateException e) {
 //            OutputStream out = response.getOutputStream();
         }
