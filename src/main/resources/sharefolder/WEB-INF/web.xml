@@ -5,10 +5,10 @@
        version="2.5">   
     <servlet>  
 		<servlet-name>webdav</servlet-name>  
-		<servlet-class>com.security.cloud.servlet.MyServlet</servlet-class>  
+		<servlet-class>com.security.cloud.servlet.LocalWeddavServlet</servlet-class>  
 		<init-param>
 			<param-name>debug</param-name>  
-			<param-value>0</param-value>  
+			<param-value>1</param-value>  
 		</init-param>  		
 		<init-param>  
 			<param-name>listings</param-name>  
