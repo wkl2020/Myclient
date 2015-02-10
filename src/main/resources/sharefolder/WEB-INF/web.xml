@@ -56,6 +56,7 @@
 	</security-role>
 	 -->
 	 
+	 
 	<filter>
 		<filter-name>setCharacterEncodingFilter</filter-name>
 		<filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
@@ -64,9 +65,33 @@
   				<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
+	
+	<filter>
+		<filter-name>webdavFixFilter</filter-name>
+		<filter-class>org.apache.catalina.filters.WebdavFixFilter</filter-class>
+	</filter>
+	
+	<filter>
+		<filter-name>myFilter</filter-name>
+		<filter-class>com.security.cloud.filter.MyFilter</filter-class>
+	</filter>
+	
+	
 	<filter-mapping>
 		<filter-name>setCharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- 
+	<filter-mapping>
+		<filter-name>webdavFixFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>	
+    -->
+      
+	<filter-mapping>
+		<filter-name>myFilter</filter-name>
+		<url-pattern>/webdavedit/*</url-pattern>
 	</filter-mapping>
      
 	<servlet-mapping>  

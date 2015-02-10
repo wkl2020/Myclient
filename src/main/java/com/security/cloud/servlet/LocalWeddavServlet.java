@@ -298,7 +298,22 @@ public class LocalWeddavServlet
         final String method = req.getMethod();
 
         if (debug > 0) {
+            log("\n\n");
             log("[" + method + "] " + path);
+            
+            Enumeration e = req.getHeaderNames();
+            String headerStr = "";
+            while(e.hasMoreElements()) {
+                String key = (String)e.nextElement();
+                headerStr += "[" + headerStr + key + ": " + req.getHeader(key) + "]|";
+            }            
+            headerStr += ("getMethod: " + req.getMethod() + "\n" +
+                    "getRequestURI: " + req.getRequestURI() + "\n" +
+                    "getQueryString: " + req.getQueryString() + "\n" +
+                    "getProtocol: " + req.getProtocol() + "\n" +
+                    "getContextPath: " + req.getContextPath() + "\n" +
+                    "getServletPath: " + req.getServletPath());
+            log("RequestHeader: " + headerStr);
         }
 
         if (method.equals(METHOD_PROPFIND)) {
