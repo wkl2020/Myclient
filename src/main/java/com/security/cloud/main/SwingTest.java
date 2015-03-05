@@ -1,5 +1,4 @@
-package com.sypan.client;
-
+package com.security.cloud.main;
 import javax.swing.*;
 
 import java.awt.*;
@@ -11,27 +10,41 @@ import javax.swing.border.*;
 import javax.swing.table.*;
 
 /** 
-* Swing 组件测试程序
-* 测试Swing所有组件及其相应的事件
-* @author 天翼.李 2003.4.17 晚23:14
+* Swing 缁勪欢娴嬭瘯绋嬪簭
+* 娴嬭瘯Swing鎵�鏈夌粍浠跺強鍏剁浉搴旂殑浜嬩欢
+* @author 澶╃考.鏉� 2003.4.17 鏅�23:14
 * @link  http://www.robochina.org
 * @link robococde@etang.com
 */
 public class SwingTest extends JFrame
 {
   /**
-   * 主模块，初始化所有子模块，并设置主框架的相关属性
+   * 涓绘ā鍧楋紝鍒濆鍖栨墍鏈夊瓙妯″潡锛屽苟璁剧疆涓绘鏋剁殑鐩稿叧灞炴��
    */
   public SwingTest()
   {
-      // 初始化所有模块
+      // 鍒濆鍖栨墍鏈夋ā鍧�
       MenuTest menuTest = new MenuTest();
       LeftPanel leftPanel = new LeftPanel();
-      RightPanel rightPanel = new RightPanel();
+      RightPanel rightPanel = new RightPanel() {
+          protected void paintComponent(Graphics g) {
+//            ImageIcon icon = new ImageIcon("image\\benbenla.jpg");
+            ImageIcon icon = (ImageIcon) PicFrame.getIcon("title2.jpg");
+            Image img = icon.getImage();
+            
+//            g.drawImage(img, 0, 0, icon.getIconWidth(), icon.getIconHeight(), icon.getImageObserver());
+            
+            // 图片随窗体大小而变化
+            g.drawImage(icon.getImage(), 0, 0, this.getSize().width, this.getSize().height, this);
+
+        }
+      };
 //      BottomPanel bottomPanel = new BottomPanel();
       CenterPanel centerPanel = new CenterPanel();
       
-      // 设置主框架的布局
+      rightPanel.setOpaque(false); //设置透明。
+      
+      // 璁剧疆涓绘鏋剁殑甯冨眬
       Container c = this.getContentPane();
       // c.setLayout(new BorderLayout())
       this.setJMenuBar(menuTest);
@@ -46,12 +59,12 @@ public class SwingTest extends JFrame
 //      c.add(bottomPanel,BorderLayout.SOUTH);
       c.add(pic,BorderLayout.NORTH);
       
-      // 利用无名内隐类，增加窗口事件
+      // 鍒╃敤鏃犲悕鍐呴殣绫伙紝澧炲姞绐楀彛浜嬩欢
       this.addWindowListener(new WindowAdapter()
           {
               public void WindowClosing(WindowEvent e)
               {   
-                  // 释放资源，退出程序
+                  // 閲婃斁璧勬簮锛岄��鍑虹▼搴�
                   dispose();
                   System.exit(0);
               }
@@ -60,8 +73,13 @@ public class SwingTest extends JFrame
       
       
       setSize(700,500);
-      setTitle("Swing 组件大全简体版");
-      // 隐藏frame的标题栏,此功暂时关闭，以方便使用window事件
+      setTitle("Swing 缁勪欢澶у叏绠�浣撶増");
+      
+      // 去除自带的Title
+//      setUndecorated(true);
+//      setDefaultCloseOperation(EXIT_ON_CLOSE);
+      
+      // 闅愯棌frame鐨勬爣棰樻爮,姝ゅ姛鏆傛椂鍏抽棴锛屼互鏂逛究浣跨敤window浜嬩欢
       // setUndecorated(true);
       setLocation(200,150);
       show();        
@@ -69,7 +87,7 @@ public class SwingTest extends JFrame
 
   ////////////////////////////////////////////////////////////////////////////
   /**
-   * 菜单栏处理模块
+   * 鑿滃崟鏍忓鐞嗘ā鍧�
    * JMenuBar --+
    *            --JMenu--+
    *                       --JMenuItem  --ActionListener 
@@ -80,13 +98,13 @@ public class SwingTest extends JFrame
       private JDialog aboutDialog;
           
       /**
-       * 菜单初始化操作
+       * 鑿滃崟鍒濆鍖栨搷浣�
        */    
       public MenuTest()
       {
-          JMenu fileMenu = new JMenu("文件");
-          JMenuItem exitMenuItem = new JMenuItem("退出",KeyEvent.VK_E);
-          JMenuItem aboutMenuItem = new JMenuItem("关于...",KeyEvent.VK_A);            
+          JMenu fileMenu = new JMenu("鏂囦欢");
+          JMenuItem exitMenuItem = new JMenuItem("閫�鍑�",KeyEvent.VK_E);
+          JMenuItem aboutMenuItem = new JMenuItem("鍏充簬...",KeyEvent.VK_A);            
                                               
           fileMenu.add(exitMenuItem);
           fileMenu.add(aboutMenuItem);
@@ -97,7 +115,7 @@ public class SwingTest extends JFrame
           aboutDialog = new JDialog();
           initAboutDialog();
                       
-          // 菜单事件
+          // 鑿滃崟浜嬩欢
           exitMenuItem.addActionListener(new ActionListener()
           {
               public void actionPerformed(ActionEvent e)
@@ -111,7 +129,7 @@ public class SwingTest extends JFrame
           {
               public void actionPerformed(ActionEvent e)
               {
-                  // "关于"对话框的处理
+                  // "鍏充簬"瀵硅瘽妗嗙殑澶勭悊
                   aboutDialog.show();
               }
           });            
@@ -119,7 +137,7 @@ public class SwingTest extends JFrame
       }
       
       /**
-       * 返回关于对话框
+       * 杩斿洖鍏充簬瀵硅瘽妗�
        */
       public JDialog getAboutDialog()
       {
@@ -127,21 +145,21 @@ public class SwingTest extends JFrame
       }
       
       /**
-       * 设置"关于"对话框的外观及响应事件,操作和JFrame一样都是在内容
-       * 框架上进行的
+       * 璁剧疆"鍏充簬"瀵硅瘽妗嗙殑澶栬鍙婂搷搴斾簨浠�,鎿嶄綔鍜孞Frame涓�鏍烽兘鏄湪鍐呭
+       * 妗嗘灦涓婅繘琛岀殑
        */
       public void initAboutDialog()
       {
-          aboutDialog.setTitle("关于");
+          aboutDialog.setTitle("鍏充簬");
           
           Container con =aboutDialog.getContentPane();
            
-          // Swing 中使用html语句
+          // Swing 涓娇鐢╤tml璇彞
           Icon icon = new ImageIcon("smile.gif");
           JLabel aboutLabel = new JLabel("<html><b><font size=5>"+
-          "<center>Swing 组件大全简体版！"+"<br>天翼.李",icon,JLabel.CENTER);
+          "<center>Swing 缁勪欢澶у叏绠�浣撶増锛�"+"<br>澶╃考.鏉�",icon,JLabel.CENTER);
                       
-          //JLabel aboutLabel = new JLabel("Swing 组件大全简体版！",icon,JLabel.CENTER);
+          //JLabel aboutLabel = new JLabel("Swing 缁勪欢澶у叏绠�浣撶増锛�",icon,JLabel.CENTER);
           con.add(aboutLabel,BorderLayout.CENTER);
           
           aboutDialog.setSize(450,225);
@@ -158,7 +176,7 @@ public class SwingTest extends JFrame
   
   ////////////////////////////////////////////////////////////////////////////
   /**
-   * 最左边模块，继承JPanel,初始化内容为JTree
+   * 鏈�宸﹁竟妯″潡锛岀户鎵縅Panel,鍒濆鍖栧唴瀹逛负JTree
    * JPanel--+
    *         --JTree
    */
@@ -181,13 +199,13 @@ public class SwingTest extends JFrame
           JTree tree = new JTree(root);
           tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
           
-          // 每个节点的行高
+          // 姣忎釜鑺傜偣鐨勮楂�
           tree.setRowHeight(20);            
           tree.addTreeSelectionListener(new TreeSelectionListener ()
           {
               public void valueChanged(TreeSelectionEvent e)
               {
-                  // 内隐类不能直接引用外部类tree，1.外部变量可申明为final 2.新建外部类的对象
+                  // 鍐呴殣绫讳笉鑳界洿鎺ュ紩鐢ㄥ閮ㄧ被tree锛�1.澶栭儴鍙橀噺鍙敵鏄庝负final 2.鏂板缓澶栭儴绫荤殑瀵硅薄
                   JTree tree =(JTree)e.getSource();
                   DefaultMutableTreeNode selectNode = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
                   i++;
@@ -205,7 +223,7 @@ public class SwingTest extends JFrame
   
   ////////////////////////////////////////////////////////////////////////////
   /**
-   * 最下面层模块，继承JPanel,初始化内容为进度条，并由定时器控制
+   * 鏈�涓嬮潰灞傛ā鍧楋紝缁ф壙JPanel,鍒濆鍖栧唴瀹逛负杩涘害鏉★紝骞剁敱瀹氭椂鍣ㄦ帶鍒�
    * JPanel--+
    *         --JProcessBar  --Timer
    */
@@ -220,7 +238,7 @@ public class SwingTest extends JFrame
           pb = new JProgressBar();
           pb.setPreferredSize(new Dimension(680,20));
           
-          // 设置定时器，用来控制进度条的处理
+          // 璁剧疆瀹氭椂鍣紝鐢ㄦ潵鎺у埗杩涘害鏉＄殑澶勭悊
           Timer time = new Timer(1,new ActionListener()
           { 
               int counter = 0;
@@ -230,7 +248,7 @@ public class SwingTest extends JFrame
                   pb.setValue(counter);
                   Timer t = (Timer)e.getSource();
                   
-                  // 如果进度条达到最大值重新开发计数
+                  // 濡傛灉杩涘害鏉¤揪鍒版渶澶у�奸噸鏂板紑鍙戣鏁�
                   if (counter == pb.getMaximum())
                   {
                       t.stop();
@@ -251,7 +269,7 @@ public class SwingTest extends JFrame
       }
       
       /**
-       * 设置进度条的数据模型
+       * 璁剧疆杩涘害鏉＄殑鏁版嵁妯″瀷
        */
       public void setProcessBar(BoundedRangeModel rangeModel)
       {
@@ -261,7 +279,7 @@ public class SwingTest extends JFrame
   
   ////////////////////////////////////////////////////////////////////////////
   /**
-   * 最右边模块，继承JPanel,初始化各种按钮
+   * 鏈�鍙宠竟妯″潡锛岀户鎵縅Panel,鍒濆鍖栧悇绉嶆寜閽�
    * JPanel--+
    *         --JButton  --JToggleButton -- JList -- JCombox --JCheckBox ....
    */
@@ -272,9 +290,28 @@ public class SwingTest extends JFrame
           this.setLayout(new GridLayout(8,1));        
           
           
-          // 初始化各种按钮
-          JCheckBox checkBox = new JCheckBox("复选按钮");            
-          JButton button = new JButton("打开文件");
+          // 鍒濆鍖栧悇绉嶆寜閽�
+          JCheckBox checkBox = new JCheckBox("复选框");
+          
+          
+          //JButton 图片透明按钮的实现
+          JButton btn1 = new JButton("打开xxx", PicFrame.getIcon("btn_dialog_pressed.png")) ;
+          btn1.setHorizontalTextPosition(SwingConstants.CENTER);
+          btn1.setVerticalTextPosition(SwingConstants.BOTTOM);
+          
+          btn1.setIcon(PicFrame.getIcon("btn_dialog_pressed.png"));
+          btn1.setRolloverIcon(PicFrame.getIcon("btn_dialog_selected.png"));  // 设置按钮的翻转图标
+          btn1.setBorderPainted(false);
+          btn1.setFocusPainted(false);
+          btn1.setContentAreaFilled(false); // 与Jpanel背景色Icon保持一致
+          btn1.setFocusable(true);
+          btn1.setMargin(new Insets(0, 0, 0, 0));
+          btn1.setText("常用交易");
+          
+          
+          
+          
+          JButton button = new JButton("鎵撳紑鏂囦欢");
           button.setIcon(PicFrame.getIcon("btn_dialog_pressed.png"));
           button.addMouseMotionListener(new MouseMotionListener() {
 
@@ -314,7 +351,7 @@ public class SwingTest extends JFrame
                   {
                       String fileName = file.getSelectedFile().getName();                    
                       String dir = file.getCurrentDirectory().toString();
-                        JOptionPane.showConfirmDialog(null,dir+"\\"+fileName,"选择的文件",JOptionPane.YES_OPTION);
+                        JOptionPane.showConfirmDialog(null,dir+"\\"+fileName,"閫夋嫨鐨勬枃浠�",JOptionPane.YES_OPTION);
                    }
               }
           });
@@ -322,7 +359,7 @@ public class SwingTest extends JFrame
           //public
           //////////////////////////////////////////
                   
-          JToggleButton toggleButton = new JToggleButton("双态按钮");
+          JToggleButton toggleButton = new JToggleButton("鍙屾�佹寜閽�");
           toggleButton.setIcon(PicFrame.getIcon("btn_dialog_pressed.png"));
           toggleButton.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
@@ -341,26 +378,35 @@ public class SwingTest extends JFrame
 //          pic.setBounds(0, 0, 510, 60);
           
           ButtonGroup    buttonGroup = new ButtonGroup();
-          JRadioButton radioButton1 = new JRadioButton("单选按钮1",false);
-          JRadioButton radioButton2 = new JRadioButton("单选按钮2",false);
           
-          // 组合框的处理
+          //3JRadioButton 图片透明按钮的实现
+          JRadioButton radio = new JRadioButton(PicFrame.getIcon("btn_dialog_pressed.png"));
+          radio.setContentAreaFilled(false);
+          radio.setRolloverIcon(PicFrame.getIcon("btn_dialog_selected.png"));
+          radio.setSelectedIcon(PicFrame.getIcon("btn_dialog_pressed.png"));
+          
+          JRadioButton radioButton1 = new JRadioButton("鍗曢�夋寜閽�1",false);
+          JRadioButton radioButton2 = new JRadioButton("鍗曢�夋寜閽�2",false);
+          
+          // 缁勫悎妗嗙殑澶勭悊
           JComboBox comboBox = new JComboBox();
-          comboBox.setToolTipText("点击下拉列表增加选项");
+          // http://www.java3z.com/cwbwebhome/article/article8/81105.html?id=2503
+          
+          comboBox.setToolTipText("鐐瑰嚮涓嬫媺鍒楄〃澧炲姞閫夐」");
           comboBox.addActionListener(new ActionListener() 
           {
               public void actionPerformed(ActionEvent e)
               {
                   JComboBox comboBox =(JComboBox)e.getSource();
-                  comboBox.addItem("程序员");
-                  comboBox.addItem("分析员");
+                  comboBox.addItem("绋嬪簭鍛�");
+                  comboBox.addItem("鍒嗘瀽鍛�");
               }
           });
           
-          // 列表框的处理
+          // 鍒楄〃妗嗙殑澶勭悊
           DefaultListModel litem = new DefaultListModel();
-          litem.addElement("香蕉");
-          litem.addElement("水果");
+          litem.addElement("棣欒晧");
+          litem.addElement("姘存灉");
           JList list = new JList(litem);
           
           
@@ -370,32 +416,37 @@ public class SwingTest extends JFrame
               {
                   JList l = (JList)e.getSource();
                   Object s= l.getSelectedValue();
-                  JOptionPane.showMessageDialog(null,s,"消息框",JOptionPane.YES_OPTION);
+                  JOptionPane.showMessageDialog(null,s,"娑堟伅妗�",JOptionPane.YES_OPTION);
               }
           });
           
-          // 增加按钮组
+          // 澧炲姞鎸夐挳缁�
           buttonGroup.add(radioButton1);
-          buttonGroup.add(radioButton2);
+//          buttonGroup.add(radioButton2);
+          buttonGroup.add(radio);
           
-          // 增加各种按钮到JPanel中显示
+          // 澧炲姞鍚勭鎸夐挳鍒癑Panel涓樉绀�
+          add(btn1);
           add(button);
           add(toggleButton);
           add(checkBox);
-          add(radioButton1);            
+          add(radioButton1); 
+          add(radio);           
           add(radioButton2);
           add(comboBox);
           
           add(list);
           
           this.setBorder(new EtchedBorder(EtchedBorder.LOWERED,Color.LIGHT_GRAY,Color.blue));
-      }        
+      }     
+      
+
   }
   
   ////////////////////////////////////////////////////////////////////////////
   /**
-   * 中间层模块，继承JPanel,初始化页签,并在页签中设置文本区，表格,
-   * 文本区上下用分隔条分隔
+   * 涓棿灞傛ā鍧楋紝缁ф壙JPanel,鍒濆鍖栭〉绛�,骞跺湪椤电涓缃枃鏈尯锛岃〃鏍�,
+   * 鏂囨湰鍖轰笂涓嬬敤鍒嗛殧鏉″垎闅�
    * JPanel--+
    *         -JTabbedPane--+
    *                          --Draw    --JTable  -JTextAreas -JText --JPopupMenu
@@ -406,19 +457,19 @@ public class SwingTest extends JFrame
       {
           JTabbedPane tab = new JTabbedPane(JTabbedPane.TOP);
           
-          JTextField textField = new JTextField("文本域,点击打开<文件按钮>可选择文件");
+          JTextField textField = new JTextField("鏂囨湰鍩�,鐐瑰嚮鎵撳紑<鏂囦欢鎸夐挳>鍙�夋嫨鏂囦欢");
           textField.setActionCommand("textField");
           
           JTextPane textPane = new JTextPane();
           textPane.setCursor(new Cursor(Cursor.TEXT_CURSOR));
-          textPane.setText("编辑器,试着点击文本区，试着拉动分隔条。");
+          textPane.setText("缂栬緫鍣�,璇曠潃鐐瑰嚮鏂囨湰鍖猴紝璇曠潃鎷夊姩鍒嗛殧鏉°��");
                       
           textPane.addMouseListener(new MouseAdapter () 
           {
               public void mousePressed (MouseEvent e)
               {
                   JTextPane textPane = (JTextPane)e.getSource();
-                  textPane.setText("编辑器点击命令成功");
+                  textPane.setText("缂栬緫鍣ㄧ偣鍑诲懡浠ゆ垚鍔�");
               //    textField.setText(""+textPane.getText());
               }
           });
@@ -433,7 +484,7 @@ public class SwingTest extends JFrame
               public void insertUpdate(DocumentEvent e)
               {
                   Document text = (Document)e.getDocument();
-                  text.setText("复制成功");
+                  text.setText("澶嶅埗鎴愬姛");
               }                
           });
           */
@@ -450,9 +501,9 @@ public class SwingTest extends JFrame
           pane.add(table.getTableHeader(),BorderLayout.NORTH);
           pane.add(table);
                       
-          tab.addTab("文本演示",splitPane);
+          tab.addTab("鏂囨湰婕旂ず",splitPane);
           //tab.addTab(table.getTableHeader());
-          tab.addTab("表格演示",pane);
+          tab.addTab("琛ㄦ牸婕旂ず",pane);
           tab.setPreferredSize(new Dimension(500,600));
           this.add(tab);
           this.setEnabled(true);            
@@ -462,7 +513,7 @@ public class SwingTest extends JFrame
   
   public static void main(String args[])
   {
-      // 设置主框架属性,此处没有使用，可打开看看效果
+      // 璁剧疆涓绘鏋跺睘鎬�,姝ゅ娌℃湁浣跨敤锛屽彲鎵撳紑鐪嬬湅鏁堟灉
       //try
       //{
       //    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

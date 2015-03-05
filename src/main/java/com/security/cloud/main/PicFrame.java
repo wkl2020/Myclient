@@ -1,4 +1,4 @@
-package com.sypan.client;
+package com.security.cloud.main;
 
 import java.awt.Cursor;
 import java.awt.Point;
@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
  
 /**
- * 无标题栏、无框窗口，皮肤自定义
+ * 鏃犳爣棰樻爮銆佹棤妗嗙獥鍙ｏ紝鐨偆鑷畾涔�
  */
 public class PicFrame extends JFrame {
  
@@ -31,25 +31,25 @@ public class PicFrame extends JFrame {
         pic.setIcon(getIcon("title2.jpg"));
         pic.setBounds(0, 0, 510, 60);
  
-        // 初始化窗体
+        // 鍒濆鍖栫獥浣�
         setResizable(false);
-        // 将窗体设置成无标题栏的语句，setUndecorated();注意此语句一定要放在setVisible之前，否则会报错
+        // 灏嗙獥浣撹缃垚鏃犳爣棰樻爮鐨勮鍙ワ紝setUndecorated();娉ㄦ剰姝よ鍙ヤ竴瀹氳鏀惧湪setVisible涔嬪墠锛屽惁鍒欎細鎶ラ敊
         setUndecorated(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(510, 60);
         setVisible(true);
         add(pic);
  
-        // 设置窗体为屏幕的中央位置
+        // 璁剧疆绐椾綋涓哄睆骞曠殑涓ぎ浣嶇疆
         int w = (Toolkit.getDefaultToolkit().getScreenSize().width - 510) / 2;
         int h = (Toolkit.getDefaultToolkit().getScreenSize().height - 60) / 2;
         this.setLocation(w, h);
  
-        // 为窗体添加鼠标事件
+        // 涓虹獥浣撴坊鍔犻紶鏍囦簨浠�
         this.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
                 isDragged = false;
-                // 为指定的光标设置光标图像
+                // 涓烘寚瀹氱殑鍏夋爣璁剧疆鍏夋爣鍥惧儚
                 setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
  
@@ -61,7 +61,7 @@ public class PicFrame extends JFrame {
         });
  
         this.addMouseMotionListener(new MouseMotionAdapter() {
-            // 鼠标按键在组件上按下并拖动时调用。
+            // 榧犳爣鎸夐敭鍦ㄧ粍浠朵笂鎸変笅骞舵嫋鍔ㄦ椂璋冪敤銆�
             public void mouseDragged(MouseEvent e) {
                 if (isDragged) {
                     loc = new Point(getLocation().x + e.getX() - tmp.x,
@@ -72,7 +72,7 @@ public class PicFrame extends JFrame {
         });
     }
  
-    // 获取图片的方法
+    // 鑾峰彇鍥剧墖鐨勬柟娉�
     public static Icon getIcon(String path) {
         URL url = PicFrame.class.getClassLoader().getResource(path);
         System.out.println("URL: " + url.getPath());
